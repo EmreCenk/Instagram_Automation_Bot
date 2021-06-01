@@ -1,6 +1,4 @@
 
-from selenium import webdriver
-from datetime import datetime
 from Static_Functions import Filtering_Information,Writing_Analysis_Files,Processing_Stats
 from random import randint,choice,uniform
 from Static_Functions.Filtering_Information import divide_dm
@@ -10,7 +8,9 @@ from Static_Functions.Filtering_Information import name_of_record, get_records
 from time import perf_counter,sleep
 from Static_Functions.Processing_Stats import followed_back, order_accounts,risk_evaluation
 from Static_Functions import bot_commands
-
+from selenium import webdriver
+from datetime import datetime
+import os
 
 
 class instabot:
@@ -18,9 +18,7 @@ class instabot:
 
     def __init__(self, usrnm="", psw="", login=True, limitperhour=5, headless=False):
         if login:
-            from selenium import webdriver
             # from selenium.webdriver.common.action_chains import ActionChains
-            from datetime import datetime
 
             options = webdriver.ChromeOptions()
             if headless:
@@ -80,6 +78,8 @@ class instabot:
 
         else:
             return True
+
+
     def broken_link(self,wait_for=None,keyword="isn't available"):
         self.wait_for_page()
         if wait_for==None:
@@ -295,7 +295,6 @@ class instabot:
 
     def findwhohasnotfollowedback(self, who, write_to_document=True, followers=None, following=None):
         """This function finds the list of people who have not followed back for any given person."""
-        import os
 
         if following is None:
             following = []
@@ -1026,7 +1025,7 @@ class instabot:
         # accounts=self.generate_generator_account(user=self.usrnm,how_many_people_to_check=account_to_generate)
 
         no_follow = self.find_who_has_not_followed_back_and_check_records(user=self.usrnm,check_records=True,save=True)
-        print("Found no followers. Loop is initialized. ")
+        print("Found no-followers. Loop is initialized. ")
 
         if i==0:
             self.added_sleep=5
