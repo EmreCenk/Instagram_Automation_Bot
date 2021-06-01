@@ -37,7 +37,7 @@ class instabot:
                 options.add_argument('--disable-dev-shm-usage')
                 options.add_argument('--no-sandbox')
 
-            self.browser = webdriver.Chrome(executable_path="Instabot_2_4\chromedriver\chromedriver.exe",
+            self.browser = webdriver.Chrome(executable_path="chromedriver\chromedriver.exe",
                                             options=options)
 
             # We have to create a separate ActionChains object each time we need to use ActionChains. This is due to

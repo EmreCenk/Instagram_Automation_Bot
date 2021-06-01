@@ -105,19 +105,24 @@ def get_follow_stats_from_records(index1,index2,username):
 
     followerfirst=firstfilelist[0]
     followerlast=lastfilelist[0]
+    followingfirst = firstfilelist[1]
+    followinglast = lastfilelist[1]
 
-    return followerfirst,followerlast
+    return followerfirst,followerlast, followingfirst, followinglast
 def who_has_unfollowed(username, index1=0, index2=-1):
     """This function analyzes who has unfollowed a given account between records index1 and index2. """
 
 
-    followerfirst, followerlast=get_follow_stats_from_records(index1,index2,username)
+    followerfirst, followerlast, a, followinglast = get_follow_stats_from_records(index1,index2,username)
 
     people_who_have_unfollowed=[]
-
+    print("ALPHA: ",followinglast)
     for person in followerfirst:
         if person not in followerlast:
-            people_who_have_unfollowed.append(person)
+            if person in followinglast:
+                people_who_have_unfollowed.append(person)
+            else:
+                people_who_have_unfollowed.append(person + "  (Y)")
 
     # followingfirst = firstfilelist[1]
     # followinglast= lastfilelist[1]
@@ -213,21 +218,23 @@ def interval_analysis(username,function_to_analyse,category="unfollowed"):
                    + str(len(a))\
                    +" people "+ category +". Here is the full list:\n"
 
-
         for k in a:
             finaltext+=k+"\n"
 
         finaltext+="\n\n"
 
-    return finaltext
+    return finaltext + "\n(Y) means that either you have " \
+                                                                                "also unfollowed them, or the person " \
+                                                                                "has changed their username"
+
 
 
 def people_who_have_unfollowed_through_history(username):
     return interval_analysis(username,who_has_unfollowed)
+
 def follower_gain_throughout_history(username):
     #doesn't work yet
     return interval_analysis(username,who_has_unfollowed,category="followed")
-
 #
 # yes=[risk_evaluation(1,22,256),
 # risk_evaluation(0,15,215),
