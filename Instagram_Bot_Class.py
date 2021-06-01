@@ -16,37 +16,56 @@ from Static_Functions import bot_commands
 class instabot:
     """The __init__ function has been revised for InstaBot 2.4"""
 
-    def __init__(self, usrnm="", psw="", login=True, limitperhour=5):
+    def __init__(self, usrnm="", psw="", login=True, limitperhour=5, headless=False):
         if login:
+            from selenium import webdriver
+            # from selenium.webdriver.common.action_chains import ActionChains
+            from datetime import datetime
 
+            options = webdriver.ChromeOptions()
+            if headless:
+                # Options to enable headless browser:
+                user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36"
+                options.headless = True
+                options.add_argument(f'user-agent={user_agent}')
+                options.add_argument("--window-size=1920,1080")
+                options.add_argument('--ignore-certificate-errors')
+                options.add_argument('--allow-running-insecure-content')
+                options.add_argument("--disable-extensions")
+                options.add_argument("--proxy-server='direct://'")
+                options.add_argument("--proxy-bypass-list=*")
+                options.add_argument("--start-maximized")
+                options.add_argument('--disable-gpu')
+                options.add_argument('--disable-dev-shm-usage')
+                options.add_argument('--no-sandbox')
 
-            self.browser = webdriver.Chrome(r"chromedriver\chromedriver.exe")
+            self.browser = webdriver.Chrome(executable_path="Instabot_2_4\chromedriver\chromedriver.exe",
+                                            options=options)
 
-            #We have to create a separate ActionChains object each time we need to use ActionChains. This is due to
+            # We have to create a separate ActionChains object each time we need to use ActionChains. This is due to
             # the fact that the send_keys function under ActionChains has a bug that can only be fixed by making a
             # different object each time ActionChains is used
 
-            #self.thingtodo = ActionChains(self.browser)
+            # self.thingtodo = ActionChains(self.browser)
             self.usrnm = usrnm
             self.psw = psw
-            self.scrollsleep=1
+            self.scrollsleep = 1
 
-
-            #The actiondone variable stores the amount of actions done in order to make sure
-            #the limit per hour is not surpassed.
+            # The actiondone variable stores the amount of actions done in order to make sure
+            # the limit per hour is not surpassed.
             self.actionsdone = 0
             self.limitperhour = limitperhour
             self.benchmark_time = datetime.now()
-            self.override=False
+            self.override = False
 
-            self.added_sleep=0
-            self.interval=0
+            self.added_sleep = 0
+            self.interval = 0
 
-            self.loop_time_out=10 #How many seconds the program will wait until the loop times out
+            self.loop_time_out = 10  # How many seconds the program will wait until the loop times out
 
-            self.dm_hashes={}
+            self.dm_hashes = {}
         else:
-            self.usrnm=self.usrnm
+            self.usrnm = self.usrnm
 
     def wait_for_page(self):
         page_main = self.browser.find_elements_by_css_selector("html")
