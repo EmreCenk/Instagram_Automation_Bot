@@ -1,0 +1,9 @@
+followers=['this is an example log file to demonstrate what real log files look like.']
+
+following=['this is an example log file to demonstrate what real log files look like.']
+
+#Followers at this time is 297
+#Following at this time is 378
+#2020-05-14 15:25:59.186285
+
+nofollowback = ["list of people who have not followed back"]
