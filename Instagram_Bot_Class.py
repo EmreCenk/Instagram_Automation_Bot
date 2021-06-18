@@ -11,6 +11,8 @@ from datetime import datetime
 
 from bot_functions import maintenance_and_errors as maerror
 from bot_functions import scraping_data
+from bot_functions import user_actions
+from bot_functions import utils
 import os
 
 
@@ -74,52 +76,8 @@ class instabot:
         return maerror.broken_link(self, wait_for, keyword)
 
     def signin(self):
-        # the signin function also closes the "turn notifications on" window
-        """ ALL THE WHILE LOOPS ARE EXPLICIT WAITS
-        I WILL NEED TO ADD A TIMEOUT SOON IN ORDER TO AVOID INFINITE LOOPS """
-
-
-
-        self.browser.get("https://www.instagram.com/")
-        sleep(randint(3, 5))
-
-        usernameplace = self.browser.find_elements_by_name("username")
-        while len(usernameplace) < 1:
-            usernameplace = self.browser.find_elements_by_name("username")
-
-        usernameplace[0].click()
-        sleep(uniform(0,1))
-        usernameplace[0].send_keys(self.usrnm)
-        sleep(uniform(0,1))
-
-        passwordplace = self.browser.find_elements_by_name("password")
-        while len(passwordplace) < 1:
-            passwordplace = self.browser.find_elements_by_name("password")
-        sleep(uniform(0,1.5))
-
-        passwordplace[0].send_keys(self.psw)
-        sleep(uniform(0,1.5))
-        passwordplace[0].send_keys(Keys.ENTER)
-        usernameplace = self.browser.find_elements_by_name("username")
-
-        #WE WAIT UNTIL THE SITE HAS LOADED OUR PAGE:
-        while len(usernameplace) > 0:
-            usernameplace = self.browser.find_elements_by_name("username")
-        sleep(1)
-
-        if self.browser.current_url == "https://www.instagram.com/accounts/onetap/?next=%2F":
-            options = self.browser.find_elements_by_class_name("sqdOP")
-            while len(options) < 2:
-                options = self.browser.find_elements_by_class_name("sqdOP")
-            sleep(randint(1, 2))
-            options[1].click()
-
-        notnow = self.browser.find_elements_by_class_name("HoLwm")
-
-        while len(notnow) < 1:
-            notnow = self.browser.find_elements_by_class_name("HoLwm")
-        sleep(randint(0, 2))
-        notnow[0].click()
+        """Signs in with the given username and password. Also closes the 'turn notifications on' window."""
+        return user_actions.signin(self)
 
 
     def check_action(self):
@@ -134,48 +92,17 @@ class instabot:
         """This function is made to scroll down the list of followers/following for a person. It can be tweaked to
         become a regular automatic scroller.
         After scrolling all the way down, it return an array of the people that it has scrolled through."""
-        try:
-
-
-            thingtodo = ActionChains(self.browser) #we need to create a separate action chains object due to the bugs
-            # with the send_keys function
-            thingtodo.send_keys(Keys.TAB).perform()
-            thingtodo.send_keys(Keys.TAB).perform()
-            thingtodo.send_keys(Keys.TAB).perform()
-            thingtodo.send_keys(Keys.TAB).perform()
-            thingtodo.send_keys(Keys.TAB).perform()
-            thingtodo.send_keys(Keys.TAB).perform()
-            thingtodo.send_keys(Keys.TAB).perform()
-            thingtodo.send_keys(Keys.TAB).perform()
-            thingtodo.send_keys(Keys.TAB).perform()
-            thingtodo.send_keys(Keys.TAB).perform()
-
-
-            now = self.browser.find_elements_by_class_name(classname)
-            while len(now) <= numpeople - 4:
-                now = self.browser.find_elements_by_class_name(classname)
-                thingtodo.send_keys(Keys.END).perform()
-                sleep(self.scrollsleep)
-
-            now = self.browser.find_elements_by_class_name(classname)
-            final = []
-            for i in now:
-                final.append(i.text)
-
-
-            return final
-
-        except:
-            return self.scrolldown(numpeople=numpeople,classname=classname)
+        return utils.scrolldown(numpeople, classname)
     def follower_following_int(self, person):
         """This function returns an array with two integers. [followernumber,followingnumber]."""
-        scraping_data.follower_following_int(self, person)
+        return scraping_data.follower_following_int(self, person)
+
     def getstat(self, person, followersorfollowing,how_many_people=None):
 
         """This function will return an array of people."""
         return scraping_data.getstat(person,followersorfollowing,how_many_people)
 
-    def findwhohasnotfollowedback(self, who, write_to_document=True, followers=None, following=None):
+    def find_who_has_not_followed_back(self, who, write_to_document=True, followers=None, following=None):
         """This function finds the list of people who have not followed back for any given person."""
 
         if following is None:
@@ -373,7 +300,7 @@ class instabot:
     def unfollownofollowbbackers(self):
         """This function is used to unfollow everyone who has not followed you back"""
 
-        bnad = self.findwhohasnotfollowedback(self.usrnm)
+        bnad = self.find_who_has_not_followed_back(self.usrnm)
         banata = ""
         for i in bnad:
             banata += i + " "
@@ -635,10 +562,10 @@ class instabot:
             if name != "":
                 no_follow_back=Filtering_Information.get_records(user=user,how_many_days=7)[-1]
                 if no_follow_back==False:
-                    no_follow_back = self.findwhohasnotfollowedback(user, save)
+                    no_follow_back = self.find_who_has_not_followed_back(user, save)
 
                 return no_follow_back
-        no_follow_back=self.findwhohasnotfollowedback(user,save)
+        no_follow_back=self.find_who_has_not_followed_back(user, save)
 
         return no_follow_back
     def message_filtered_who_have_not_followed_back(self, user, save=True):

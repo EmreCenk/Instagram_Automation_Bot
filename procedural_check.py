@@ -11,7 +11,7 @@ bot.signin()
 bot.added_sleep=0
 bot.scrollsleep=0
 # bot.message_who_has_not_followed_back(user=user, check_records=False)
-print(bot.findwhohasnotfollowedback(user,True))
+print(bot.find_who_has_not_followed_back(user, True))
 
 
 # bot.direct_message(user,str(pt.people_who_have_unfollowed_through_history(user)))
