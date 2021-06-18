@@ -1,7 +1,7 @@
 venv/
 old/
 Analysis_of_people/
-followed.txt
+old/followed2.txt
 info.py
-Run.py
-to_msg.txt
+old/Run.py
+old/to_msg.txt
