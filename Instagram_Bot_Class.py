@@ -1,10 +1,8 @@
 
 from Static_Functions import Filtering_Information,Writing_Analysis_Files,Processing_Stats
 from random import randint,choice,uniform
-from Static_Functions.Filtering_Information import divide_dm
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.action_chains import ActionChains
-from Static_Functions.Filtering_Information import name_of_record, get_records
 from time import perf_counter,sleep
 from Static_Functions.Processing_Stats import followed_back, order_accounts,risk_evaluation
 from Static_Functions import bot_commands
@@ -557,7 +555,7 @@ class instabot:
         """This function sends 'message' to the user with the user name 'person'. """
 
         if len(message)>1000:
-            message=divide_dm(message)
+            message=Filtering_Information.divide_dm(message)
 
         else:
             message=[message]
@@ -724,9 +722,9 @@ class instabot:
     def find_who_has_not_followed_back_and_check_records(self, user, check_records=True, save=True):
         """"""
         if check_records:
-            name = name_of_record(user, -1)
+            name = Filtering_Information.name_of_record(user, -1)
             if name != "":
-                no_follow_back=get_records(user=user,how_many_days=7)[-1]
+                no_follow_back=Filtering_Information.get_records(user=user,how_many_days=7)[-1]
                 if no_follow_back==False:
                     no_follow_back = self.findwhohasnotfollowedback(user, save)
 
@@ -967,7 +965,7 @@ class instabot:
         if user == None:
             user = self.usrnm
 
-        main = main=get_records(user,how_many_days=40)
+        main = Filtering_Information.get_records(user,how_many_days=40)
         followers = main[0]
         following = main[1]
 

@@ -1,3 +1,9 @@
+from Static_Functions import working_with_dates as dt
+from Static_Functions.Processing_Stats import findlist
+from Static_Functions.working_with_dates import parse_date_from_file
+from Static_Functions.Writing_Analysis_Files import path
+import os
+
 def filter_stat(stat):
     update = ""
     for i in stat:
@@ -27,8 +33,7 @@ def filter_stat(stat):
 
 def name_of_record(user,index=-1):
     """Returns string with the name of the users record with index 'index'."""
-    from Static_Functions.Writing_Analysis_Files import path
-    import os
+
 
     pathtogo = path[0:-1]
     pathtogo = pathtogo + user
@@ -67,9 +72,6 @@ def divide_dm(message, separator=" "):
 def get_records(user,how_many_days=7):
     """    RETURNS: [ARRAY_OF_FOLLOWERS,ARRAY_OF_FOLLOWING,ARRAY_OF_PEOPLE_WHO_HAVENT_FOLLOWED_BACK]   """
 
-    from Static_Functions import working_with_dates as dt
-    from Static_Functions.Processing_Stats import findlist
-    from Static_Functions.working_with_dates import parse_date_from_file
 
     name = name_of_record(user, -1)  # getting the latest report
 
