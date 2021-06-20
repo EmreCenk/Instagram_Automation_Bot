@@ -100,7 +100,7 @@ class instabot:
     def getstat(self, person, followersorfollowing,how_many_people=None):
 
         """This function will return an array of people."""
-        return scraping_data.getstat(person,followersorfollowing,how_many_people)
+        return scraping_data.getstat(self, person,followersorfollowing,how_many_people)
 
     def find_who_has_not_followed_back(self, who, write_to_document=True, followers=None, following=None):
         """This function finds the list of people who have not followed back for any given person."""
