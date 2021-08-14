@@ -92,7 +92,7 @@ class instabot:
         """This function is made to scroll down the list of followers/following for a person. It can be tweaked to
         become a regular automatic scroller.
         After scrolling all the way down, it return an array of the people that it has scrolled through."""
-        return utils.scrolldown(numpeople, classname)
+        return utils.scrolldown(self, numpeople, classname)
     def follower_following_int(self, person):
         """This function returns an array with two integers. [followernumber,followingnumber]."""
         return scraping_data.follower_following_int(self, person)
@@ -100,7 +100,7 @@ class instabot:
     def getstat(self, person, followersorfollowing,how_many_people=None):
 
         """This function will return an array of people."""
-        return scraping_data.getstat(person,followersorfollowing,how_many_people)
+        return scraping_data.getstat(self, person,followersorfollowing,how_many_people)
 
     def find_who_has_not_followed_back(self, who, write_to_document=True, followers=None, following=None):
         """This function finds the list of people who have not followed back for any given person."""
